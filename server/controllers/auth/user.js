@@ -11,23 +11,23 @@ export const signUp = async(req,res)=>{
         const isValidUser = await mongoose.connection.collection(process.env.VALID_USERS_COLLECTION).findOne({email})
 
         if(!isValidUser){
-            res.status(400).json({message:"This user does not exist"})
+           return res.status(400).json({message:"This user does not exist"})
         }
 
         const isUserAlreadyExists = await User.findOne({email})
 
         if(isUserAlreadyExists){
-            res.status(400).json({message:"emailId already exists"})
+           return res.status(400).json({message:"emailId already exists"})
         }
 
         req.body.password = await bcrypt.hash(password,10)
 
         const newUser = await User.create(req.body)
 
-        res.status(201).json({message:"ok"})
+        return res.status(201).json({message:"ok"})
 
     }catch(err){
-        res.status(500).json({message:err.message})
+        return res.status(500).json({message:err.message})
     }
 } 
 
@@ -48,7 +48,7 @@ export const login=async(req,res)=>{
 
     const token=generateToken({email:user.email,id:user._id})
 
-    res.status(200).json({message:"ok"})
+    res.status(200).json({message:"ok",token})
 
 
 }
