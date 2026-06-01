@@ -1,0 +1,19 @@
+import React, { createContext, useEffect, useState } from 'react'
+import { Outlet } from 'react-router-dom'
+
+const UserProvider = createContext()
+function ContextProvider() {
+    const [userDetails,setUserDetails] = useState({})
+
+    useEffect(()=>{
+        const userData = localStorage.getItem("user")
+        setUserDetails(userData)
+    },[])
+  return (
+    <UserProvider.Provider value={{userDetails}}>
+        <Outlet/>
+    </UserProvider.Provider>
+  )
+}
+
+export default ContextProvider

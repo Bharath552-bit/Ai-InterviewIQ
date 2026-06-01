@@ -2,11 +2,19 @@ import Home from "./pages/Home"
 import Login from "./pages/Login"
 import SignUp from "./pages/SignUp"
 import {ToastContainer} from 'react-toastify'
-import { BrowserRouter,Route,Routes } from "react-router-dom"
+import { BrowserRouter,Route,Routes, useParams } from "react-router-dom"
 import ProtectedLayout from "./components/ProtectedLayout"
 import AuthProtectedLayout from "./components/AuthProtectedLayout"
+import FallbackComponent from "./components/FallbackComponent"
+import { useState } from "react"
+import Layout from "./components/Layout"
+import NewInterview from "./pages/NewInterview"
+import Profile from "./pages/Profile"
+import ContextProvider from "./components/ContextProvider"
+import History from "./pages/History"
 
 function App() {
+
   return (
     <>
      <ToastContainer
@@ -22,14 +30,20 @@ function App() {
         theme="light"
       />
     <BrowserRouter>
+
       <Routes>
-        <Route element={<AuthProtectedLayout />}>
-          <Route path='/' element={<Home />}/>
-          <Route path="*" element={<FallbackC}/>
-        </Route>
-        <Route element={<ProtectedLayout />}>
-          <Route path='/signup' element={<SignUp />}/>
-          <Route path='login' element={<Login />}/>
+        <Route element={<Layout/>}>
+          <Route element={<AuthProtectedLayout />}>
+            <Route path='/' element={<Home />}/>
+            <Route path="*" element={<FallbackComponent/>}/>
+            <Route path="/new-interview" element={<NewInterview/>} />
+            <Route path="/history" element={<History/>} />
+            <Route path="/profile" element={<Profile/>} />
+          </Route>
+          <Route element={<ProtectedLayout />}>
+            <Route path='/signup' element={<SignUp />}/>
+            <Route path='login' element={<Login />}/>
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>
