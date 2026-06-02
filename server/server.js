@@ -5,7 +5,9 @@ import mongoose from 'mongoose'
 import cookieParser from 'cookie-parser'
 import dotenv from 'dotenv'
 import  authRouter from './routes/auth.js'
+import userRouter from './routes/user.js'
 import dns from 'node:dns'
+import { profile } from 'node:console'
 dns.setServers(['8.8.8.8', '1.1.1.1']);
 dotenv.config()
 
@@ -23,6 +25,7 @@ mongoose.connect(Db_Uri).then(()=>{
 
 
 app.use("/auth",authRouter)
+app.use("/user",userRouter)
 
 
 const port=process.env.PORT

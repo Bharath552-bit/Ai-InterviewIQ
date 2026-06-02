@@ -4,7 +4,7 @@ import axios from 'axios'
 import { toast } from 'react-toastify'
 
 function SignUp() {
-    const [formValues,setFromValues]=useState({name : "", email :"", age : 0, phone : "", password : "", confirmPassword : ""})
+    const [formValues,setFromValues]=useState({name : "", email :"", dob : "", phone : "", password : "", confirmPassword : ""})
 
     const navigate = useNavigate()
     function updateFormData(e){
@@ -41,7 +41,7 @@ function SignUp() {
 
         const body={
             name:formValues.name,
-            age:formValues.age,
+            dob:formValues.dob,
             email:formValues.email,
             phone:formValues.phone,
             password:formValues.password
@@ -71,8 +71,8 @@ function SignUp() {
                 <input className='border-1' type="email" required value={formValues.email} name='email' id='email' onChange={updateFormData}  />
             </div>
             <div>
-                <label htmlFor="age"> Age </label>
-                <input className='border-1' type="number" value={formValues.age} name='age' id='age' onChange={updateFormData}  />
+                <label htmlFor="dob"> Dob </label>
+                <input className='border-1' type="date" value={formValues.dob} name='dob' id='dob' onChange={updateFormData}  />
             </div>  <div>
                 <label htmlFor="phone"> Phone </label>
                 <input className='border-1' type="text" required name='phone' value={formValues.phone} id='phone'  onChange={updateFormData}  />

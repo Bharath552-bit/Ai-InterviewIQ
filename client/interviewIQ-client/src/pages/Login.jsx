@@ -1,11 +1,12 @@
 import axios from 'axios'
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
 function Login() {
 
   const [userCredentials,setUserCredentials]=useState({email:"",password:""})
+  const navigate = useNavigate()
 
   function updateLoginFormData(e){
     const {name,value}=e.target
@@ -23,8 +24,9 @@ function Login() {
     try{
       const data=await axios.post("http://localhost:4000/auth/login",userCredentials)
       localStorage.setItem("token",data.data.message)
-      localStorage.setItem("user",JSON.stringify(data.data.user))
-      console.log(data)
+      localStorage.setItem("user",JSON.stringify(data.data.userDetails))
+      console.log(data.data.userDetails)
+      navigate("/")
     }catch(err){
       toast.error(err.response.data.message)
     }

@@ -1,12 +1,12 @@
 import React, { createContext, useEffect, useState } from 'react'
 import { Outlet } from 'react-router-dom'
 
-const UserProvider = createContext()
+export const UserProvider = createContext()
 function ContextProvider() {
     const [userDetails,setUserDetails] = useState({})
 
     useEffect(()=>{
-        const userData = localStorage.getItem("user")
+        const userData = JSON.parse(localStorage.getItem("user"))
         setUserDetails(userData)
     },[])
   return (

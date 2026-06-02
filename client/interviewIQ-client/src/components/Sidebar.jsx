@@ -12,22 +12,24 @@ function Sidebar() {
   }
   return (
     <div className='flex flex-col justify-between h-screen'>
-      <header>
-        <h1>Ai-InterviewIQ</h1>
-      </header>
-      <ul>
-        <nav>
-          {
-        navItems.map((item)=>{
-          return <li key={item.path}>
-            <Link to={item.path}>{item.name}</Link>
-          </li>
-        })
-      }
-        </nav>
-      </ul>
+      <div className='flex flex-col'>
+        <header>
+          <h1>Ai-InterviewIQ</h1>
+        </header>
+        <ul className='pl-3 mt-5'>
+          <nav>
+            {
+          navItems.map((item)=>{
+            return <li key={item.path}>
+              <Link to={item.path}>{item.name}</Link>
+            </li>
+          })
+        }
+          </nav>
+        </ul>
+      </div>
       <div>
-        <button className='cursor-pointer'>Log Out</button>
+        <button onClick={logOut} className='cursor-pointer'>Log Out</button>
       </div>
     </div>
   )

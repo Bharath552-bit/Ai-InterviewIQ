@@ -48,7 +48,13 @@ export const login=async(req,res)=>{
 
     const token=generateToken({email:user.email,id:user._id})
 
-    res.status(200).json({message:"ok",token})
+    const userDetails = {
+        name: user.name,
+        email: user.email,
+        dob: user.dob || null,
+        phone: user.phone,
+    }
 
+    res.status(200).json({message:"ok",token,userDetails})
 
 }
