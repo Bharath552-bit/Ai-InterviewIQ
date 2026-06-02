@@ -17,8 +17,14 @@ function UpdateProfileForm() {
     async function updateUser(e){
         e.preventDefault()
 
+        const updatedRecords={}
+
+        for(let key in userDetails){
+            if(userDetails[key] != updatedDetails[key]) updatedDetails[key] = updatedDetails.key
+        }
+
         try{
-            const data = await axios.patch(`http://localhost:4000/user/updateUser`)
+            const data = await axios.patch(`http://localhost:4000/user/updateUser`,updatedRecords)
         }catch(err){
             console.log(err.message)
             toast.error(err.message)
@@ -30,10 +36,6 @@ function UpdateProfileForm() {
             <div>
                 <label htmlFor="name">Name :</label>
                 <input type="text" id='name' name='name' value={updatedDetails.name} onChange={(e)=>updateValues(e.target.value,'name')}  />
-            </div>
-            <div>
-                <label htmlFor="email">Email :</label>
-                <input type="email" id='email' name='email' value={updatedDetails.email} onChange={(e)=>updateValues(e.target.value,'email')}  />
             </div>
             <div>
                 <label htmlFor="dob">Dob :</label>

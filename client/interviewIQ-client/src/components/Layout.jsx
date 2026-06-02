@@ -12,7 +12,7 @@ function Layout() {
             <Sidebar/>
         </div> }
         
-        <div className='w-full'>
+        <div className='w-full overflow-auto'>
             <Outlet/>
         </div>
     </div>

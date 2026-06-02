@@ -10,12 +10,12 @@ function Profile() {
   const [isChangeDetailsForm,setIsChangeDetailsForm] = useState(false)
 
   function getAge(dob){
+    
     if(!dob) return null
     const age = moment().diff(dob,'years')
 
     return age
   }
-
 
   return (
     <div className='relative'>
