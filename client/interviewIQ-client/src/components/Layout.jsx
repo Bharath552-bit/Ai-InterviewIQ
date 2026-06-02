@@ -8,7 +8,7 @@ function Layout() {
     const isBarHidden = location.pathname=="/login" || location.pathname=="/signup"
   return (
     <div className='flex h-screen'>
-        {!isBarHidden && <div className='border-1 w-36'>
+        {!isBarHidden && <div className='w-[22%]'>
             <Sidebar/>
         </div> }
         
