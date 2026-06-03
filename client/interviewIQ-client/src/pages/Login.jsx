@@ -16,6 +16,7 @@ function Login() {
     updatedUserCredentails[name]=value
 
     setUserCredentials(updatedUserCredentails)
+
   }
 
   async function login(e){
@@ -23,7 +24,7 @@ function Login() {
 
     try{
       const data=await axios.post("http://localhost:4000/auth/login",userCredentials)
-      localStorage.setItem("token",data.data.message)
+      localStorage.setItem("token",data.data.token)
       localStorage.setItem("user",JSON.stringify(data.data.userDetails))
       console.log(data.data.userDetails)
       navigate("/")

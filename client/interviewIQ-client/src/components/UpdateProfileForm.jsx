@@ -1,8 +1,11 @@
 import React, { useContext, useState } from 'react'
 import { UserProvider } from './ContextProvider'
 import axios from 'axios'
+import { api } from '../api-s/interceptors'
+import { toast } from 'react-toastify'
+import { Navigate, useNavigate } from 'react-router-dom'
 
-function UpdateProfileForm() {
+function UpdateProfileForm({setIsChangeDetailsForm}) {
     const {userDetails} = useContext(UserProvider)
     const [updatedDetails,setUpdatedDetails]=useState(userDetails)
 
@@ -14,21 +17,29 @@ function UpdateProfileForm() {
         setUpdatedDetails(newData)
     }
 
+
     async function updateUser(e){
         e.preventDefault()
 
         const updatedRecords={}
 
+        console.log(updatedRecords)
+
+
         for(let key in userDetails){
-            if(userDetails[key] != updatedDetails[key]) updatedDetails[key] = updatedDetails.key
+            if(userDetails[key] !== updatedDetails[key]){
+                updatedRecords[key] = updatedDetails[key]
+            } 
+                
         }
 
         try{
-            const data = await axios.patch(`http://localhost:4000/user/updateUser`,updatedRecords)
+            const data = await api.patch(`/user/updateUser`,updatedRecords)
+            localStorage.setItem("user",JSON.stringify(data.updatedUser))
         }catch(err){
-            console.log(err.message)
             toast.error(err.message)
         }
+        setIsChangeDetailsForm(false)
     }
 
     return (

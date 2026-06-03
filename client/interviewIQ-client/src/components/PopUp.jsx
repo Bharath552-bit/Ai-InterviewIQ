@@ -22,7 +22,7 @@ function PopUp({setIsChangeDetailsForm,RenderComponent}) {
         </div>
 
         <div className="p-1">
-          <RenderComponent />
+          <RenderComponent setIsChangeDetailsForm={setIsChangeDetailsForm}/>
         </div>
 
       </div>
