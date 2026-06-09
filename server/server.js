@@ -6,8 +6,11 @@ import dotenv from 'dotenv'
 import  authRouter from './routes/auth.js'
 import userRouter from './routes/user.js'
 import interviewRouter from './routes/interview.js'
+import http from 'http'
+import { Server } from 'socket.io'
 import dns from 'node:dns'
 import { profile } from 'node:console'
+import interviewSocket from './sockets/interviewSocket.js'
 dns.setServers(['8.8.8.8', '1.1.1.1']);
 dotenv.config()
 
@@ -28,8 +31,24 @@ app.use("/auth",authRouter)
 app.use("/user",userRouter)
 app.use("/interview",interviewRouter)
 
+//creating server for socket.io
+const server = http.createServer()
+
+// creating instance for socket.io 
+const io = new Server(server,{
+    cors:"*",
+    methods : ["GET","POST"]
+})
+
+// once io connection is established executes callback
+io.on("connection",(socket)=>{
+    console.log(socket.id,'socket connected')
+    
+    interviewSocket(socket)
+})
+
 
 const port=process.env.PORT
-app.listen(port,()=>{
+server.listen(port,()=>{
     console.log(`server running on ${port}`)
 })
