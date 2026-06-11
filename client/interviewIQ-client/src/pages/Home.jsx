@@ -2,18 +2,16 @@ import React, { useEffect, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
 import { api } from '../api-s/interceptors'
 import socket from '../interviewSocket'
+import { startListening, stopListening, textToSpeech } from '../utils/speech'
 
 function Home() {
   const aiContentContainer = useRef()
   const [userText,setUserText] = useState("")
-  const recognition = new SpeechRecognition()
-  recognition.continuous = false;
-  recognition.lang = "en-US";
-  recognition.interimResults = false;
-  recognition.maxAlternatives = 1;
+  const [spokenText,setSpokenText] = useState("")
 
   async function callingAi(e){
     e.preventDefault()
+
     if(!userText){
       toast.error("Enter prompt to ai")
       return 
@@ -28,26 +26,17 @@ function Home() {
     }
   }
 
-  function startSpeaking(){
-    recognition.start()
-  }
-
-  function stopSpeaking(){
-    recognition.stop()
-    recognition.onresult = (event) => {
-      const userResponse = event.results[0][0].transcript;
-      const utternence = new SpeechSynthesisUtterance(userResponse)
-      speechSynthesis.speak(utternence)
-      console.log(utternence)
-    };
-  }
-
   function startInterview(){
     socket.emit("first-message",{message:"Lets start the interview"})
+
     socket.on("first-response",(data)=>{
       console.log(data)
+      if(data.message){
+        textToSpeech(data.message)
+      }
       socket.emit("second-message",{message:"Give me the first question"})
     })
+    
     socket.on("second-response",(data)=>{
       console.log(data)
     })
@@ -63,10 +52,12 @@ function Home() {
           <input type="submit" className={`${!userText.length?"bg-blue-200":"bg-blue-400 cursor-pointer"} rounded-xl' value="Submit`} />
         </form>
         <div className='flex justify-center gap-5 '>
-          <button onClick={startSpeaking} className='bg-blue-400 w-12 h-10 cursor-pointer rounded-xl'>Start</button>
-          <button onClick={stopSpeaking} className='bg-blue-400 w-12 h-10 cursor-pointer rounded-xl'>Stop</button>
+          <button onClick={()=>startListening(setSpokenText)} className='bg-blue-400 w-12 h-10 cursor-pointer rounded-xl'>Start</button>
+          <button onClick={stopListening} className='bg-blue-400 w-12 h-10 cursor-pointer rounded-xl'>Stop</button>
         </div>
         <button onClick={startInterview}>Start Interview</button>
+
+        <textarea value={spokenText} onChange={(e)=>setSpokenText(e.target.value)}></textarea>
         <div ref={aiContentContainer}>
 
         </div>
