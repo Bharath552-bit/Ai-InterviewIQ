@@ -33,3 +33,25 @@ export const aiInterview = async (req,res)=>{
 
     res.status(200).json({message:'ok',data:response.text})
 }
+
+async function askAi({messages}){
+
+    const prompt = messages.map((item)=>{
+        return `${item.role} : ${item.content}`
+    })
+
+    try{
+
+        const response = await ai.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: prompt
+        });
+
+        return response.text
+
+    }catch(err){
+        return Promise.reject(err)
+    }
+}
+
+export {askAi}

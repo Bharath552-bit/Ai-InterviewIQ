@@ -1,6 +1,6 @@
 import { toast } from "react-toastify"
 
-function textToSpeech(text){
+function textToSpeech(text,setIsAiSpeaking){
 
     if(!text){
         toast.error("Please provide text")
@@ -17,6 +17,14 @@ function textToSpeech(text){
     speechSynthesis.cancel()
 
     const utterence = new SpeechSynthesisUtterance(text)
+
+    utterence.onstart = ()=>{
+        setIsAiSpeaking(true)
+    }
+
+    utterence.onend = ()=>{
+        setIsAiSpeaking(false)
+    }
 
     speechSynthesis.speak(utterence)
 }
