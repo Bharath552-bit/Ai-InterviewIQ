@@ -3,11 +3,11 @@ import TechnicalScoreChart from '../components/TechnicalScoreChart'
 import SkillsChart from '../components/SkillsChart'
 import InterviewHistoryTable from '../components/InterviewHistoryTable'
 
-function Home() {
+function Dashboard() {
   return (
     <div className='flex flex-col justify-between h-screen'>
       {/* charts */}
-      <div className='flex border h-full'>
+      <div className='flex border h-full '>
         
         <TechnicalScoreChart/>
 
@@ -25,4 +25,4 @@ function Home() {
   )
 }
 
-export default Home
+export default Dashboard

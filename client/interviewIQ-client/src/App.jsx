@@ -1,4 +1,3 @@
-import Home from "./pages/Home"
 import Login from "./pages/Login"
 import SignUp from "./pages/SignUp"
 import {ToastContainer} from 'react-toastify'
@@ -12,6 +11,7 @@ import NewInterview from "./pages/NewInterview"
 import Profile from "./pages/Profile"
 import ContextProvider from "./components/ContextProvider"
 import History from "./pages/History"
+import Dashboard from "./pages/Dashboard"
 
 function App() {
 
@@ -34,7 +34,7 @@ function App() {
       <Routes>
         <Route element={<Layout/>}>
           <Route element={<AuthProtectedLayout />}>
-            <Route path='/' element={<Home />}/>
+            <Route path='/' element={<Dashboard/>}/>
             <Route path="*" element={<FallbackComponent/>}/>
             <Route path="/new-interview" element={<NewInterview/>} />
             <Route path="/history" element={<History/>} />

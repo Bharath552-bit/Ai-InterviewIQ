@@ -40,7 +40,7 @@ const MyCustomPie = (props) => {
 
 export default function SkillsChart(){
   return (
-    <PieChart style={{ width: '100%', maxWidth: '500px', maxHeight: '80vh', aspectRatio: 1 }} responsive>
+    <PieChart style={{ width: '60vw', maxWidth: '500px',height : '50vh', maxHeight: '80vh', aspectRatio: 1 }} responsive>
       <Pie
         data={data}
         labelLine={false}

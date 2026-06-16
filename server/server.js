@@ -2,6 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import mongoose from 'mongoose'
 // import cookieParser from 'cookie-parser'
+import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
 import  authRouter from './routes/auth.js'
 import userRouter from './routes/user.js'
@@ -11,6 +12,7 @@ import { Server } from 'socket.io'
 import dns from 'node:dns'
 import { profile } from 'node:console'
 import interviewSocket from './sockets/interviewSocket.js'
+import { socketMiddleware } from './middlewares/socketMiddleware.js'
 dns.setServers(['8.8.8.8', '1.1.1.1']);
 dotenv.config()
 
@@ -32,13 +34,17 @@ app.use("/user",userRouter)
 app.use("/interview",interviewRouter)
 
 //creating server for socket.io
-const server = http.createServer()
+const server = http.createServer(app)
+
 
 // creating instance for socket.io 
 const io = new Server(server,{
     cors:"*",
     methods : ["GET","POST"]
 })
+
+//creating io middleware to get data
+io.use((socket,next)=>socketMiddleware(socket,next))
 
 // once io connection is established executes callback
 io.on("connection",(socket)=>{

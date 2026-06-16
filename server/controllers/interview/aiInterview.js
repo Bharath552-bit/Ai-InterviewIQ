@@ -1,6 +1,7 @@
 import OpenAI from "openai";
 import {GoogleGenAI} from '@google/genai';
 import dotenv from 'dotenv'
+import { endInterviewPrompt } from "../../utils/prompts.js";
 dotenv.config()
 
 const ai = new GoogleGenAI({apiKey: process.env.GEMINI_API_KEY});
@@ -38,7 +39,7 @@ async function askAi({messages}){
 
     const prompt = messages.map((item)=>{
         return `${item.role} : ${item.content}`
-    })
+    }).join("/n")
 
     try{
 
@@ -54,4 +55,27 @@ async function askAi({messages}){
     }
 }
 
-export {askAi}
+async function getFeedbackFromAi({messages}){
+    const prompt = messages.map((item)=>{
+        return `${item.role} : ${item.content}`
+    }).join("/n")
+
+    try{
+
+        const response = await ai.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: prompt,
+            config: {
+                responseMimeType: "application/json"
+            }
+        });
+
+        return response.text
+
+    }catch(err){
+        return Promise.reject(err)
+    }
+}
+
+
+export {askAi,getFeedbackFromAi}

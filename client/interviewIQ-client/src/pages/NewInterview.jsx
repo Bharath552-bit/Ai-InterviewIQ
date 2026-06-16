@@ -10,7 +10,7 @@ function NewInterview() {
   const aiContentContainer = useRef()
   const [userText,setUserText] = useState("")
   const [spokenText,setSpokenText] = useState("")
-  const [question,setQuestion] = useState("First Question")
+  const [question,setQuestion] = useState("")
   const [buttonText,setButtonText] = useState("Start")
   const [currentStage,setCurrentStage] = useState(INTERVIEW_STAGES.DID_NOT_ANSWER_YET)
   const [buttonStyle,setButtonStyle] = useState("bg-blue-400")
@@ -37,6 +37,7 @@ function NewInterview() {
     socket.emit("start-interview",{message:"Lets start the interview"})
     socket.on("ai-question",(data)=>{
       console.log(data.question)
+      setQuestion(data.question)
       if(data.question){
         textToSpeech(data.question,setIsAiSpeaking)
       }
@@ -84,21 +85,6 @@ function NewInterview() {
   },[])
   return (
     <div className='flex h-screen justify-center relative'>
-        {/* <form onSubmit={callingAi} className='flex justify-center gap-3 mt-3'>
-          <textarea type="text" className='shadow-2xl w-80' placeholder='Ask ai' onChange={(e)=>setUserText(e.target.value)}></textarea>
-          <input type="submit" className={`${!userText.length?"bg-bl–ue-200":"bg-blue-400 cursor-pointer"} rounded-xl' value="Submit`} />
-        </form>
-        <div className='flex justify-center gap-5 '>
-          <button onClick={()=>startListening(setSpokenText)} className='bg-blue-400 w-12 h-10 cursor-pointer rounded-xl'>Start</button>
-          <button onClick={stopListening} className='bg-blue-400 w-12 h-10 cursor-pointer rounded-xl'>Stop</button>
-        </div>
-        <button onClick={startInterview}>Start Interview</button>
-
-        <textarea value={spokenText} onChange={(e)=>setSpokenText(e.target.value)}></textarea>
-        <div ref={aiContentContainer}>
-
-        </div> */}
-
         <div className='absolute top-20.5'>
           <img src={aiDummy} alt='could not load image' className={`h-60 rounded-3xl ${isAiSpeaking?"opacity-100":"opacity-50"}`} />
           <h3 className='font-bold text-xl'>{question}</h3>
