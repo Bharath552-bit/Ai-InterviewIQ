@@ -73,7 +73,7 @@ function interviewSocket(socket){
             const nextQuestion = await askAi({messages : session.conversation})
 
             session.conversation.push({
-                role : "assistance",
+                role : "assistant",
                 content : nextQuestion
             })
 
@@ -96,6 +96,7 @@ function interviewSocket(socket){
     })
 
     socket.on("end-conversation",async ()=>{
+        console.log("calling from end interview" )
 
         try{
             const session = interviewSessions.get(socket.id)
@@ -111,19 +112,19 @@ function interviewSocket(socket){
                 content : endInterviewPrompt()
             })
     
-            // const userReport = await getFeedbackFromAi({messages: session.conversation})
-            const dummyConversation = [{ role: "assistant", content: "Explain promise in javascript" }, { role: "user", content: "Promise is an object, we use promises to handle async tasks, it has 2 stages resolved and rejected" }, { role: "stystem", content: endInterviewPrompt() }]
-            let userReport = await getFeedbackFromAi({messages : dummyConversation})
+            let userReport = await getFeedbackFromAi({messages: session.conversation})
 
             userReport = JSON.parse(userReport)
          
             if(userReport){
                 session.conversation.push({
-                    role : "assistance",
-                    content : userReport
+                    role : "assistant",
+                    content : JSON.stringify(userReport)
                 })
                 addInterview(session,userReport)
             }
+
+            socket.emit("speak-feedback",{feedback : "this is my feedback"})
             
             interviewSessions.delete(socket.id)
         }catch(err){
@@ -162,7 +163,7 @@ async function addInterview(session,userReport){
 
     interviewData.feedback = userReport.feedback
 
-    // interviewData.conversation = 
+    interviewData.conversation = session.conversation
 
     interviewData.startedAt = session.startedAt
 

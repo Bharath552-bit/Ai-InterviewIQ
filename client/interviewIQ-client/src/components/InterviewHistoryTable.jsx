@@ -71,13 +71,8 @@ const difficultyBadge = (difficulty) => {
 
 export default function InterviewHistoryTable() {
   return (
-    <div className="flex h-full w-full flex-col rounded-2xl border bg-white p-4 shadow-sm">
-      <div className="mb-3">
-        <h3 className="text-base font-semibold text-slate-800">Interview History</h3>
-        <p className="text-xs text-slate-500">All your past interview sessions</p>
-      </div>
-
-      <div className="min-h-0 flex-1 overflow-auto rounded-xl border">
+    <div className="flex h-full w-full flex-col rounded-2xl  bg-white p-4 shadow-sm">
+      <div className="min-h-0 flex-1 overflow-auto">
         <table className="w-full text-sm">
           <thead className="sticky top-0 bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
             <tr>

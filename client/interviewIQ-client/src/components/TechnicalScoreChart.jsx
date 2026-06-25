@@ -1,62 +1,101 @@
 import React from 'react'
-import {CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts'
+import {
+  CartesianGrid,
+  Legend,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts'
+import moment from 'moment'
 
-function TechnicalScoreChart() {
+function TechnicalScoreChart({ interviewData }) {
 
-    const data = [
-        {
-            interview : 'interview-1',
-            technicalScore : 5,
-            date : '04/05/2026'
-        },
-        {
-            interview : 'interview-2',
-            technicalScore : 6,
-            date : '05/05/2026'
-        },
-        {
-            interview : 'interview-3',
-            technicalScore : 4,
-            date : '06/05/2026'
-        },
-        {
-            interview : 'interview-4',
-            technicalScore : 5,
-            date : '07/05/2026'
-        }
-    ]
+  if (!interviewData?.length) {
+    return (
+      <div className="h-[320px] flex items-center justify-center text-slate-500">
+        No interview data available
+      </div>
+    )
+  }
+
+  const data = interviewData.map((interview) => ({
+    technicalScore: interview.technicalScore,
+    date: moment(interview.startedAt).format("DD MMM")
+  }))
+
   return (
-    <div >
-        {/* <ResponsiveContainer width='100%' aspect={1.618} maxHeight={500}> */}
+    <div className="w-full h-[320px]">
+
+      <ResponsiveContainer width="100%" height="100%">
 
         <LineChart
-            style={{ width: '100%', maxWidth: '700px',width : '40vw', height: '50vh', maxHeight: '70vh', aspectRatio: 1.618 }}
-            responsive
-            data={data}
-            margin={{
-                top: 5,
-                right: 0,
-                left: 0,
-                bottom: 5,
+          data={data}
+          margin={{
+            top: 10,
+            right: 20,
+            left: 0,
+            bottom: 10,
+          }}
+        >
+
+          <CartesianGrid
+            strokeDasharray="4 4"
+            stroke="#E2E8F0"
+          />
+
+          <XAxis
+            dataKey="date"
+            tick={{ fill: "#64748B", fontSize: 12 }}
+            tickLine={false}
+            axisLine={false}
+          />
+
+          <YAxis
+            domain={[0, 10]}
+            tick={{ fill: "#64748B", fontSize: 12 }}
+            tickLine={false}
+            axisLine={false}
+          />
+
+          <Tooltip
+            contentStyle={{
+              borderRadius: "12px",
+              border: "1px solid #CBD5E1",
+              boxShadow: "0 10px 25px rgba(0,0,0,.08)"
             }}
-            >
-            <CartesianGrid strokeDasharray="3 3"/>
-            <XAxis dataKey="date"  />
-            <YAxis width="auto" domain ={[0,10]} />
-            <Tooltip/>
-            <Legend />
-            <Line
-                type="monotone"
-                dataKey="technicalScore"
-                // stroke="var(--color-chart-1)"
-                // dot={{
-                // fill: 'var(--color-surface-base)',
-                // }}
-                activeDot={{ r: 6 }}
-            />
+          />
+
+          <Legend
+            wrapperStyle={{
+              paddingTop: 10
+            }}
+          />
+
+          <Line
+            type="monotone"
+            dataKey="technicalScore"
+            name="Technical Score"
+            stroke="#2563EB"
+            strokeWidth={3}
+            dot={{
+              r: 5,
+              fill: "#2563EB",
+              stroke: "#ffffff",
+              strokeWidth: 2
+            }}
+            activeDot={{
+              r: 8,
+              fill: "#2563EB"
+            }}
+          />
+
         </LineChart>
 
-        {/* </ResponsiveContainer> */}
+      </ResponsiveContainer>
+
     </div>
   )
 }

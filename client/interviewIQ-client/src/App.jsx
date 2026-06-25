@@ -12,6 +12,7 @@ import Profile from "./pages/Profile"
 import ContextProvider from "./components/ContextProvider"
 import History from "./pages/History"
 import Dashboard from "./pages/Dashboard"
+import Home from "./pages/Home"
 
 function App() {
 
@@ -35,6 +36,7 @@ function App() {
         <Route element={<Layout/>}>
           <Route element={<AuthProtectedLayout />}>
             <Route path='/' element={<Dashboard/>}/>
+            <Route path="/home" element = {<Home/>}/>
             <Route path="*" element={<FallbackComponent/>}/>
             <Route path="/new-interview" element={<NewInterview/>} />
             <Route path="/history" element={<History/>} />
