@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {
   Cell,
   Legend,
@@ -8,10 +8,12 @@ import {
   Sector,
   Tooltip,
 } from 'recharts'
+import { UserProvider } from './ContextProvider'
 
-function SkillsChart({ interviewData }) {
+function SkillsChart() {
+  const {allInterviews} = useContext(UserProvider)
 
-  if (!interviewData?.length) {
+  if (!allInterviews?.length) {
     return (
       <div className="h-[320px] flex items-center justify-center text-slate-500">
         No interview data available
@@ -19,7 +21,7 @@ function SkillsChart({ interviewData }) {
     )
   }
 
-  const latestInterview = interviewData[interviewData.length - 1]
+  const latestInterview = allInterviews[allInterviews.length - 1]
 
   const data = [
     {

@@ -2,6 +2,8 @@ import mongoose from "mongoose"
 import { User } from "../../models/User.js"
 import bcrypt from 'bcryptjs'
 import { generateToken } from "../../utils/generateJwtToken.js"
+import dotenv from 'dotenv'
+dotenv.config()
 
 export const signUp = async(req,res)=>{
     try{

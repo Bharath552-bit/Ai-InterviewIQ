@@ -1,26 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import TechnicalScoreChart from '../components/TechnicalScoreChart'
 import SkillsChart from '../components/SkillsChart'
 import InterviewHistoryTable from '../components/InterviewHistoryTable'
 import axios from 'axios'
 import { api } from '../api-s/interceptors'
+import { UserProvider } from '../components/ContextProvider'
 
 function Dashboard() {
-  const [interviewData,setInterviewData] = useState([])
-  const token = localStorage.getItem("token")
-
-  if(!token){
-    return
-  }
-
-  async function gettingInterviewData(){
-    const apiData = await api.post("/interview/getInterview",{token})
-    setInterviewData(apiData.interview)
-  }
-
-  useEffect(()=>{
-    gettingInterviewData()
-  },[])
   return (
   <div className="min-h-screen bg-slate-50 p-6">
     <div className="mb-6">
@@ -46,7 +32,7 @@ function Dashboard() {
           </p>
         </div>
 
-        <TechnicalScoreChart interviewData={interviewData} />
+        <TechnicalScoreChart/>
 
       </div>
 
@@ -61,7 +47,7 @@ function Dashboard() {
           </p>
         </div>
 
-        <SkillsChart interviewData={interviewData} />
+        <SkillsChart/>
 
       </div>
 

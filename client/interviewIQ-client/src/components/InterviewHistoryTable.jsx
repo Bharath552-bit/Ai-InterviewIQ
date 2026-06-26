@@ -1,4 +1,3 @@
-// components/InterviewHistoryTable.tsx
 
 const rows = [
   {

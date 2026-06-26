@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {
   CartesianGrid,
   Legend,
@@ -7,13 +7,17 @@ import {
   ResponsiveContainer,
   Tooltip,
   XAxis,
-  YAxis,
+  YAxis, 
 } from 'recharts'
 import moment from 'moment'
+import { UserProvider } from './ContextProvider'
 
-function TechnicalScoreChart({ interviewData }) {
+function TechnicalScoreChart() {
 
-  if (!interviewData?.length) {
+  const {allInterviews} = useContext(UserProvider)
+  console.log(allInterviews)
+
+  if (!allInterviews?.length) {
     return (
       <div className="h-[320px] flex items-center justify-center text-slate-500">
         No interview data available
@@ -21,7 +25,7 @@ function TechnicalScoreChart({ interviewData }) {
     )
   }
 
-  const data = interviewData.map((interview) => ({
+  const data = allInterviews.map((interview) => ({
     technicalScore: interview.technicalScore,
     date: moment(interview.startedAt).format("DD MMM")
   }))
