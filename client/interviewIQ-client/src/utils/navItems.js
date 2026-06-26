@@ -5,7 +5,7 @@ export const navItems = [
     },
     {
         name:"New Interview",
-        path:"/new-interview"
+        path:"/interview/setup"
     },
     {
         name:"History",

@@ -13,6 +13,7 @@ import ContextProvider from "./components/ContextProvider"
 import History from "./pages/History"
 import Dashboard from "./pages/Dashboard"
 import Home from "./pages/Home"
+import InterviewSetup from "./pages/InterviewSetup"
 
 function App() {
 
@@ -38,9 +39,10 @@ function App() {
             <Route path='/' element={<Dashboard/>}/>
             <Route path="/home" element = {<Home/>}/>
             <Route path="*" element={<FallbackComponent/>}/>
-            <Route path="/new-interview" element={<NewInterview/>} />
+            <Route path="/interview/live" element={<NewInterview/>} />
             <Route path="/history" element={<History/>} />
             <Route path="/profile" element={<Profile/>} />
+            <Route path="/interview/setup" element={<InterviewSetup/>}/>
           </Route>
           <Route element={<ProtectedLayout />}>
             <Route path='/signup' element={<SignUp />}/>

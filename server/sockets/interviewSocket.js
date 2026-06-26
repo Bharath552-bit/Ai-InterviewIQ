@@ -9,29 +9,22 @@ function interviewSocket(socket){
 
     const userId = socket.userId
 
-    // socket.on("first-message",(data)=>{
-    //     console.log(data)
-    //     socket.emit("first-response",{message:"ok good now lets move to interview"})
-    // })
-    // socket.on("second-message",(data)=>{
-    //     console.log(data)
-    //     socket.emit("second-response",{message:"tell me about javaScript"})
-    // })
-
-    socket.on("start-interview",async({stack = "MERN",difficultyLevel = "fresher"})=>{
+    socket.on("start-interview",async(setup)=>{
         
         try{
 
             const session = {
                 userId,
-                stack,
-                difficultyLevel,
+                stack :setup.stack,
+                difficultyLevel :setup.difficulty,
+                duration : setup.duration,
+                experience : setup.experience,
                 startedAt : new Date(),
                 conversation : [
                     {
                         role: "system",
 
-                        content: startInterviewPrompt(stack,difficultyLevel)
+                        content: startInterviewPrompt(setup)
                     }
                 ]
             }
@@ -77,7 +70,7 @@ function interviewSocket(socket){
                 content : nextQuestion
             })
 
-            socket.emit("next-question",{question : nextQuestion})
+            socket.emit("ai-question",{question : nextQuestion})
 
         }catch(err){
             console.log(err)
@@ -124,7 +117,7 @@ function interviewSocket(socket){
                 addInterview(session,userReport)
             }
 
-            socket.emit("speak-feedback",{feedback : "this is my feedback"})
+            socket.emit("speak-feedback",{feedback : userReport.feedback})
             
             interviewSessions.delete(socket.id)
         }catch(err){
@@ -156,6 +149,10 @@ async function addInterview(session,userReport){
     interviewData.stack = session.stack
 
     interviewData.difficultyLevel = session.difficultyLevel
+
+    interviewData.duration = session.duration
+
+    interviewData.experience = session.experience
 
     interviewData.weakAreas = userReport.weakAreas
 

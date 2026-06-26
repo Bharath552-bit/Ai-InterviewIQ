@@ -5,9 +5,11 @@ import socket from '../interviewSocket'
 import { startListening, stopListening, textToSpeech } from '../utils/speech'
 import aiDummy from '../assets/aiDummy.jpeg'
 import { INTERVIEW_STAGES } from '../constants'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 function NewInterview() {
   const aiContentContainer = useRef()
+  const navigate = useNavigate()
   const [userText,setUserText] = useState("")
   const [spokenText,setSpokenText] = useState("")
   const [question,setQuestion] = useState("")
@@ -18,6 +20,10 @@ function NewInterview() {
   const [timer,setTimer] = useState(5*60)
   const [isLastMinute,setIsLastMinute] = useState(false)
   const [isInterviewStarted,setIsInterviewStarted] = useState(false)
+  const location = useLocation()
+  const setup = location.state
+
+  console.log(setup)
 
   async function callingAi(e){
     e.preventDefault()
@@ -38,7 +44,7 @@ function NewInterview() {
 
   function startInterview(){
     setIsInterviewStarted(true)
-    socket.emit("start-interview",{message:"Lets start the interview"})
+    socket.emit("start-interview",setup)
     socket.on("ai-question",(data)=>{
       console.log(data.question)
       setQuestion(data.question)
@@ -93,6 +99,9 @@ function NewInterview() {
   },[])
 
   useEffect(()=>{
+    if (!setup) {
+      navigate("/interview/setup");
+    }
     const interval = setInterval(()=>{
       setTimer((prev)=>{
         if(prev == 60){

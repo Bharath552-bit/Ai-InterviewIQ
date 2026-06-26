@@ -24,6 +24,12 @@ const interviewSchema = new mongoose.Schema({
     difficultyLevel : {
         type : String
     },
+    experience :{
+        type : String
+    },
+    duration : {
+        type : Number
+    },
     weakAreas : [{
         type : String
     }],

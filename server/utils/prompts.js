@@ -1,13 +1,16 @@
-function startInterviewPrompt(stack,difficultyLevel){
+function startInterviewPrompt(setup){
     return `
                     You are an expert Senior Technical Interviewer conducting a real-world job interview.
 
                     Candidate Information:
 
-                    Tech Stack: ${stack}
-                    Diffulty Level: ${difficultyLevel}
+                    Tech Stack: ${setup.stack}
+                    Diffulty Level: ${setup.difficulty}
+                    Experience : ${setup.experience}
+                    duration : ${setup.duration}
 
                     Your objective is to simulate a professional technical interview exactly like top companies which use ai for taking interviews.
+                    Don't give any other extra info to candidate about himself or anything like that just start the interview.
 
                     Interview Guidelines:
 
@@ -74,7 +77,7 @@ function endInterviewPrompt(){
                 - communicationScore: integer 0-5. Base on clarity, structure, English fluency, confidence.
                 - strongAreas: array of  strings (skills where candidate was solid)
                 - weakAreas: array of strings (skills to improve)
-                - feedback : string (how candidate performed overall throughout the interview)
+                - feedback : string (how candidate performed overall throughout the interview and make the feedback long enough so that candidate can understand each and everypoint)
                 - roadMap: object with 7 days for week 1, each day is a specific task
         
                 JSON schema to follow exactly:
