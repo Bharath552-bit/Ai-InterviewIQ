@@ -5,7 +5,9 @@ import Sidebar from './Sidebar'
 function Layout() {
 
     const location = useLocation()
-    const isBarHidden = location.pathname=="/login" || location.pathname=="/signUp"
+    const token = localStorage.getItem("token")
+    const isBarHidden = location.pathname=="/login" || location.pathname=="/signup" 
+    || location.pathname == "/interview/live" || (location.pathname === "/" && !token)
   return (
     <div className='flex h-screen'>
         {!isBarHidden && <div className='w-[22%]'>

@@ -8,7 +8,7 @@ function Sidebar() {
 
   function logOut(){
     localStorage.clear()
-    navigate("/login")
+    navigate("/")
   }
 
   return (

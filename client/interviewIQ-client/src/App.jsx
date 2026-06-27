@@ -35,9 +35,9 @@ function App() {
 
       <Routes>
         <Route element={<Layout/>}>
+          <Route path="/" element = {<Home/>}/>
           <Route element={<AuthProtectedLayout />}>
-            <Route path='/' element={<Dashboard/>}/>
-            <Route path="/home" element = {<Home/>}/>
+            <Route path='/dashboard' element={<Dashboard/>}/>
             <Route path="*" element={<FallbackComponent/>}/>
             <Route path="/interview/live" element={<NewInterview/>} />
             <Route path="/history" element={<History/>} />

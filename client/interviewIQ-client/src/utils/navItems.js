@@ -1,7 +1,11 @@
 export const navItems = [
     {
+        name :"Home",
+        path : "/"
+    },
+    {
         name:"Dashboard",
-        path:"/"
+        path:"/dashboard"
     },
     {
         name:"New Interview",

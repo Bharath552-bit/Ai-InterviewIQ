@@ -5,17 +5,30 @@ import InterviewHistoryTable from '../components/InterviewHistoryTable'
 import axios from 'axios'
 import { api } from '../api-s/interceptors'
 import { UserProvider } from '../components/ContextProvider'
+import { useNavigate } from 'react-router-dom'
 
 function Dashboard() {
+  const navigate = useNavigate()
   return (
   <div className="min-h-screen bg-slate-50 p-6">
-    <div className="mb-6">
-      <h1 className="text-3xl font-bold text-slate-800">
-        Dashboard
-      </h1>
-      <p className="text-slate-500 mt-1">
-        Track your interview performance and monitor your progress.
-      </p>
+    <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+      <div>
+        <h1 className="text-3xl font-bold text-slate-800">
+          Dashboard
+        </h1>
+
+        <p className="text-slate-500 mt-1">
+          Track your interview performance and monitor your progress.
+        </p>
+      </div>
+
+      <button
+        className="mt-4 md:mt-0 flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-xl font-semibold shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer"
+        onClick={()=>navigate("interview/setup")}
+      >
+        New Interview
+      </button>
+
     </div>
 
     {/* Charts Section */}
@@ -43,7 +56,7 @@ function Dashboard() {
             Skills Distribution
           </h2>
           <p className="text-sm text-slate-500">
-            Breakdown of your interview skills
+            Breakdown of skills based on your latest interview
           </p>
         </div>
 
