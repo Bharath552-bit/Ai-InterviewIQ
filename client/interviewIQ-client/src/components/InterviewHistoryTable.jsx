@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { UserProvider } from "./ContextProvider";
 import moment from 'moment'
+import { Link } from "react-router-dom";
 
 const scoreBadge = (score) =>
   score >= 8 ? "bg-green-100 text-green-700"
@@ -21,7 +22,6 @@ const difficultyBadge = (difficulty) => {
 export default function InterviewHistoryTable() {
   const {allInterviews} = useContext(UserProvider)
   const latestInterviews = allInterviews.slice(-5).reverse()
-  console.log(latestInterviews)
 
   return (
   <div className="w-full overflow-hidden rounded-2xl border border-slate-200 bg-white">
@@ -74,7 +74,7 @@ export default function InterviewHistoryTable() {
 
             <tr
               key={interview._id}
-              className="border-b border-slate-100 hover:bg-blue-50 transition-all duration-200"
+              className="border-b border-slate-100 transition-all duration-200"
             >
 
               <td className="px-5 py-4 text-slate-500 font-medium">
@@ -139,25 +139,25 @@ export default function InterviewHistoryTable() {
 
               <td className="px-5 py-4 text-center">
 
-                <button
-                  className="inline-flex items-center gap-2 rounded-lg border border-blue-200 bg-blue-50 px-4 py-2 text-sm font-medium text-blue-600 hover:bg-blue-600 hover:text-white transition-all duration-300 cursor-pointer"
+                <Link
+                to={`/history/${interview._id}`}
+                className="inline-flex items-center justify-center gap-2 rounded-lg border border-blue-200 bg-blue-50 px-4 py-2 text-sm font-medium text-blue-600 hover:bg-blue-600 hover:text-white transition-all duration-300 cursor-pointer no-underline"
                 >
-                  View
+                View
 
-                  <svg
-                    className="h-4 w-4"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M5 12h14" />
-                    <path d="m12 5 7 7-7 7" />
-                  </svg>
-
-                </button>
+                <svg
+                  className="h-4 w-4"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M5 12h14" />
+                  <path d="m12 5 7 7-7 7" />
+                </svg>
+              </Link>
 
               </td>
 

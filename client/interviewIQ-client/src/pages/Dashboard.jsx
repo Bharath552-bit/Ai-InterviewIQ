@@ -5,7 +5,7 @@ import InterviewHistoryTable from '../components/InterviewHistoryTable'
 import axios from 'axios'
 import { api } from '../api-s/interceptors'
 import { UserProvider } from '../components/ContextProvider'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 function Dashboard() {
   const navigate = useNavigate()
@@ -22,12 +22,12 @@ function Dashboard() {
         </p>
       </div>
 
-      <button
-        className="mt-4 md:mt-0 flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-xl font-semibold shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer"
-        onClick={()=>navigate("interview/setup")}
+      <Link
+        to="/interview/setup"
+        className="mt-4 md:mt-0 inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-xl font-semibold shadow-md hover:shadow-lg transition-all duration-300 no-underline"
       >
         New Interview
-      </button>
+      </Link>
 
     </div>
 
