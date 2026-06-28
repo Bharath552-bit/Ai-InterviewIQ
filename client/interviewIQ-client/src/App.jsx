@@ -14,6 +14,7 @@ import History from "./pages/History"
 import Dashboard from "./pages/Dashboard"
 import Home from "./pages/Home"
 import InterviewSetup from "./pages/InterviewSetup"
+import InterviewById from "./pages/InterviewById"
 
 function App() {
 
@@ -38,6 +39,7 @@ function App() {
           <Route path="/" element = {<Home/>}/>
           <Route element={<AuthProtectedLayout />}>
             <Route path='/dashboard' element={<Dashboard/>}/>
+            <Route path="/history/:id" element={<InterviewById/>}/>
             <Route path="*" element={<FallbackComponent/>}/>
             <Route path="/interview/live" element={<NewInterview/>} />
             <Route path="/history" element={<History/>} />

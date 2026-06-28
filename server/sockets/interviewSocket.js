@@ -35,7 +35,7 @@ function interviewSocket(socket){
 
             session.conversation.push({
                 role : "assistant",
-                content : firstQuestion 
+                content : firstQuestion
             })
 
             socket.emit("ai-question",{question : firstQuestion})
@@ -110,10 +110,6 @@ function interviewSocket(socket){
             userReport = JSON.parse(userReport)
          
             if(userReport){
-                session.conversation.push({
-                    role : "assistant",
-                    content : JSON.stringify(userReport)
-                })
                 addInterview(session,userReport)
             }
 

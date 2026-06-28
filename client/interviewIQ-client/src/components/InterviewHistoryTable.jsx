@@ -1,56 +1,6 @@
-
-const rows = [
-  {
-    id: 1,
-    stack: "MERN",
-    difficulty: "Medium",
-    date: "04/06/2026",
-    technicalScore: 5,
-    communicationScore: 7,
-    duration: "32 min",
-    status: "Completed",
-  },
-  {
-    id: 2,
-    stack: "Python / Django",
-    difficulty: "Hard",
-    date: "08/06/2026",
-    technicalScore: 7,
-    communicationScore: 8,
-    duration: "45 min",
-    status: "Completed",
-  },
-  {
-    id: 3,
-    stack: "Java / Spring",
-    difficulty: "Hard",
-    date: "10/06/2026",
-    technicalScore: 8,
-    communicationScore: 6,
-    duration: "28 min",
-    status: "Completed",
-  },
-  {
-    id: 4,
-    stack: "React / Node",
-    difficulty: "Easy",
-    date: "12/06/2026",
-    technicalScore: 6,
-    communicationScore: 9,
-    duration: "38 min",
-    status: "Completed",
-  },
-  {
-    id: 5,
-    stack: "Go / Microservices",
-    difficulty: "Medium",
-    date: "14/06/2026",
-    technicalScore: 9,
-    communicationScore: 8,
-    duration: "50 min",
-    status: "Completed",
-  },
-];
+import { useContext } from "react";
+import { UserProvider } from "./ContextProvider";
+import moment from 'moment'
 
 const scoreBadge = (score) =>
   score >= 8 ? "bg-green-100 text-green-700"
@@ -69,58 +19,158 @@ const difficultyBadge = (difficulty) => {
 };
 
 export default function InterviewHistoryTable() {
+  const {allInterviews} = useContext(UserProvider)
+  const latestInterviews = allInterviews.slice(-5).reverse()
+  console.log(latestInterviews)
+
   return (
-    <div className="flex h-full w-full flex-col rounded-2xl  bg-white p-4 shadow-sm">
-      <div className="min-h-0 flex-1 overflow-auto">
-        <table className="w-full text-sm">
-          <thead className="sticky top-0 bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
-            <tr>
-              <th className="px-4 py-3">Sq.no</th>
-              <th className="px-4 py-3">Stack</th>
-              <th className="px-4 py-3">Difficulty level</th>
-              <th className="px-4 py-3">Date</th>
-              <th className="px-4 py-3">Technical Score</th>
-              <th className="px-4 py-3">Communication Score</th>
-              <th className="px-4 py-3">Duration</th>
-              <th className="px-4 py-3">Action</th>
+  <div className="w-full overflow-hidden rounded-2xl border border-slate-200 bg-white">
+
+    <div className="overflow-x-auto">
+
+      <table className="w-full">
+
+        <thead className="sticky top-0 bg-slate-100 border-b border-slate-200">
+
+          <tr className="text-xs uppercase tracking-wider text-slate-600">
+
+            <th className="px-5 py-4 text-left font-semibold">#</th>
+
+            <th className="px-5 py-4 text-left font-semibold">
+              Tech Stack
+            </th>
+
+            <th className="px-5 py-4 text-left font-semibold">
+              Difficulty
+            </th>
+
+            <th className="px-5 py-4 text-left font-semibold">
+              Date
+            </th>
+
+            <th className="px-5 py-4 text-center font-semibold">
+              Technical
+            </th>
+
+            <th className="px-5 py-4 text-center font-semibold">
+              Communication
+            </th>
+
+            <th className="px-5 py-4 text-center font-semibold">
+              Duration
+            </th>
+
+            <th className="px-5 py-4 text-center font-semibold">
+              Action
+            </th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          {latestInterviews.map((interview, i) => (
+
+            <tr
+              key={interview._id}
+              className="border-b border-slate-100 hover:bg-blue-50 transition-all duration-200"
+            >
+
+              <td className="px-5 py-4 text-slate-500 font-medium">
+                {i + 1}
+              </td>
+
+              <td className="px-5 py-4">
+
+                <div className="font-semibold text-slate-800">
+                  {interview.stack}
+                </div>
+
+              </td>
+
+              <td className="px-5 py-4">
+
+                <span
+                  className={`inline-flex rounded-lg px-3 py-1 text-xs font-semibold ${difficultyBadge(
+                    interview.difficultyLevel
+                  )}`}
+                >
+                  {interview.difficultyLevel}
+                </span>
+
+              </td>
+
+              <td className="px-5 py-4 text-slate-600">
+
+                {moment(interview.startedAt).format("DD MMM YYYY")}
+
+              </td>
+
+              <td className="px-5 py-4 text-center">
+
+                <span
+                  className={`inline-flex rounded-lg px-3 py-1 text-xs font-semibold ${scoreBadge(
+                    interview.technicalScore
+                  )}`}
+                >
+                  {interview.technicalScore}/10
+                </span>
+
+              </td>
+
+              <td className="px-5 py-4 text-center">
+
+                <span
+                  className={`inline-flex rounded-lg px-3 py-1 text-xs font-semibold ${scoreBadge(
+                    interview.communicationScore * 2
+                  )}`}
+                >
+                  {interview.communicationScore}/5
+                </span>
+
+              </td>
+
+              <td className="px-5 py-4 text-center text-slate-600">
+
+                {interview.duration} min
+
+              </td>
+
+              <td className="px-5 py-4 text-center">
+
+                <button
+                  className="inline-flex items-center gap-2 rounded-lg border border-blue-200 bg-blue-50 px-4 py-2 text-sm font-medium text-blue-600 hover:bg-blue-600 hover:text-white transition-all duration-300 cursor-pointer"
+                >
+                  View
+
+                  <svg
+                    className="h-4 w-4"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M5 12h14" />
+                    <path d="m12 5 7 7-7 7" />
+                  </svg>
+
+                </button>
+
+              </td>
+
             </tr>
-          </thead>
-          <tbody>
-            {rows.map((r, i) => (
-              <tr key={r.id} className={i % 2 ? "bg-white" : "bg-slate-50/40"}>
-                <td className="px-4 py-3 text-slate-500">{r.id}</td>
-                <td className="px-4 py-3 font-medium text-slate-800">{r.stack}</td>
-                <td className="px-4 py-3">
-                  <span className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${difficultyBadge(r.difficulty)}`}>
-                    {r.difficulty}
-                  </span>
-                </td>
-                <td className="px-4 py-3 text-slate-600">{r.date}</td>
-                <td className="px-4 py-3">
-                  <span className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${scoreBadge(r.technicalScore)}`}>
-                    {r.technicalScore}/10
-                  </span>
-                </td>
-                <td className="px-4 py-3">
-                  <span className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${scoreBadge(r.communicationScore)}`}>
-                    {r.communicationScore}/10
-                  </span>
-                </td>
-                <td className="px-4 py-3 text-slate-600">{r.duration}</td>
-                <td className="px-4 py-3">
-                  <button className="inline-flex h-8 items-center gap-1 rounded-md px-3 text-xs font-medium text-slate-700 hover:bg-slate-100">
-                    View
-                    <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M5 12h14" />
-                      <path d="m12 5 7 7-7 7" />
-                    </svg>
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+
+          ))}
+
+        </tbody>
+
+      </table>
+
     </div>
-  );
+
+  </div>
+);
 }

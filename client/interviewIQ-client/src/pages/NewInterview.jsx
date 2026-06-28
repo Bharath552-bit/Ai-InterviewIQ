@@ -23,7 +23,7 @@ function NewInterview() {
   const location = useLocation()
   const setup = location.state
 
-  console.log(setup)
+  
 
   async function callingAi(e){
     e.preventDefault()
@@ -101,6 +101,10 @@ function NewInterview() {
   useEffect(()=>{
     if (!setup) {
       navigate("/interview/setup");
+    }
+    if(setup){
+      setTimer(setup.duration * 60)
+      startInterview()
     }
     const interval = setInterval(()=>{
       setTimer((prev)=>{
@@ -221,13 +225,6 @@ function NewInterview() {
 
         {/* Bottom Buttons */}
         <div className="flex justify-center gap-4 mt-4 flex-wrap">
-          {!isInterviewStarted ? <button
-            onClick={startInterview}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-medium transition-all duration-300 cursor-pointer shadow-md"
-          >
-            Start Interview
-          </button>:null}
-
           {isInterviewStarted ? <button
             className={`${buttonStyle} text-white px-6 py-3 rounded-xl font-medium transition-all duration-300 cursor-pointer shadow-md`}
             onClick={handleStartButton}

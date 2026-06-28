@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { UserProvider } from "../components/ContextProvider";
 import moment from "moment";
+import { Link } from "react-router-dom";
 
 function History() {
   const { allInterviews } = useContext(UserProvider);
@@ -35,11 +36,6 @@ function History() {
       <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
 
         {allInterviews.map((interview) => {
-
-          const duration = moment(interview.endedAt).diff(
-            moment(interview.startedAt),
-            "minutes"
-          );
 
           return (
 
@@ -77,7 +73,7 @@ function History() {
                 </p>
 
                 <p className="font-semibold text-slate-700">
-                  {duration} min
+                  {interview.duration} min
                 </p>
 
               </div>
@@ -120,11 +116,12 @@ function History() {
               </div>
 
               {/* Button */}
-              <button
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-xl font-medium transition-all duration-300"
+              <Link
+              to={`/history/${interview._id}`}
+              className="flex w-full items-center justify-center bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-xl font-medium transition-all duration-300 cursor-pointer"
               >
-                View Interview
-              </button>
+              View Interview
+              </Link>
 
             </div>
 

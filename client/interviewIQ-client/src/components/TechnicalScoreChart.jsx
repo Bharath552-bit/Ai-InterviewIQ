@@ -15,7 +15,6 @@ import { UserProvider } from './ContextProvider'
 function TechnicalScoreChart() {
 
   const {allInterviews} = useContext(UserProvider)
-  console.log(allInterviews)
 
   if (!allInterviews?.length) {
     return (

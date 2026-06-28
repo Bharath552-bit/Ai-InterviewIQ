@@ -1,6 +1,6 @@
 const techStackItems = [
   { label: "MERN", value: "MERN" },
-  { label: "Frontend Development", value: "Frontend Development" },
+  { label: "Frontend Dev", value: "Frontend Dev" },
   { label: "Java Full Stack", value: "Java Full Stack" },
   { label: "Python Full Stack", value: "Python Full Stack" },
 ];
