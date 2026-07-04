@@ -113,7 +113,7 @@ function interviewSocket(socket){
                 addInterview(session,userReport)
             }
 
-            socket.emit("speak-feedback",{feedback : userReport.feedback})
+            socket.emit("speak-feedback",userReport)
             
             interviewSessions.delete(socket.id)
         }catch(err){

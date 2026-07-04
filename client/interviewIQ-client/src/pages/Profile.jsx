@@ -1,100 +1,290 @@
-import axios from 'axios'
-import React, { useContext, useState } from 'react'
-import { UserProvider } from '../components/ContextProvider'
-import moment from 'moment'
-import PopUp from '../components/PopUp'
-import UpdateProfileForm from '../components/UpdateProfileForm'
+import React, { useContext, useState } from "react";
+import moment from "moment";
+import { UserProvider } from "../components/ContextProvider";
+import PopUp from "../components/PopUp";
+import UpdateProfileForm from "../components/UpdateProfileForm";
 
 function Profile() {
-  const {userDetails} = useContext(UserProvider)
-  const [isChangeDetailsForm,setIsChangeDetailsForm] = useState(false)
+  const { userDetails, allInterviews } = useContext(UserProvider);
 
-  function getAge(dob){
+  const [isChangeDetailsForm, setIsChangeDetailsForm] = useState(false);
 
-    if(!dob) return null
-    const age = moment().diff(dob,'years')
-
-    return age
+  function getAge(dob) {
+    if (!dob) return "N/A";
+    return moment().diff(dob, "years");
   }
+
+  const totalInterviews = allInterviews?.length || 0;
+
+  const averageTechnicalScore=
+     totalInterviews
+    ? (
+        allInterviews.reduce(
+          (sum, interview) => sum + interview.technicalScore,
+          0
+        ) / totalInterviews
+      ).toFixed(1)
+    : "0";
+
+  const averageCommunicationScore=
+     totalInterviews
+    ? (
+        allInterviews.reduce(
+          (sum, interview) => sum + interview.communicationScore,
+          0
+        ) / totalInterviews
+      ).toFixed(1)
+    : "0";
+  
+
+  const bestScore = totalInterviews
+    ? Math.max(...allInterviews.map((i) => i.technicalScore))
+    : 0;
+
+  const joinedDate =
+    userDetails?.createdAt || userDetails?.updatedAt
+      ? moment(userDetails.createdAt || userDetails.updatedAt).format(
+          "MMMM YYYY"
+        )
+      : "June 2026";
 
   return (
     <div className="relative min-h-screen bg-slate-50 p-6">
 
-      {isChangeDetailsForm
-        ? <PopUp
-            setIsChangeDetailsForm={setIsChangeDetailsForm}
-            RenderComponent={UpdateProfileForm}
-          />
-        : null
-      }
+      {isChangeDetailsForm && (
+        <PopUp
+          setIsChangeDetailsForm={setIsChangeDetailsForm}
+          RenderComponent={UpdateProfileForm}
+        />
+      )}
 
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-6xl mx-auto">
 
-        <div className="bg-white border border-slate-200 rounded-2xl shadow-md overflow-hidden">
+        {/* Profile Header */}
 
-          {/* Header */}
-          <div className="bg-gradient-to-r from-blue-600 to-blue-500 px-8 py-8">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-10 mb-6">
 
-              <div>
-                <h1 className="text-3xl font-bold text-white">
-                  Profile
-                </h1>
-                <p className="text-blue-100 mt-1">
-                  Manage your personal information
-                </p>
-              </div>
+          <div className="flex flex-col items-center">
 
-              <button
-                onClick={() => setIsChangeDetailsForm(true)}
-                className="mt-4 md:mt-0 bg-white text-blue-600 px-5 py-2.5 rounded-xl font-semibold hover:bg-slate-100 transition-all duration-300 cursor-pointer"
-              >
-                Edit Profile
-              </button>
+            <div className="w-28 h-28 rounded-full bg-blue-600 text-white flex items-center justify-center text-4xl font-bold shadow-md">
+
+              {userDetails?.name
+                ? userDetails.name
+                    .split(" ")
+                    .map((word) => word[0])
+                    .join("")
+                    .substring(0, 2)
+                    .toUpperCase()
+                : "U"}
 
             </div>
+
+            <h1 className="mt-5 text-3xl font-bold text-slate-800">
+
+              {userDetails?.name}
+
+            </h1>
+
+            <p className="mt-1 text-slate-500">
+
+              Software Engineer Aspirant
+
+            </p>
+
+            <div className="mt-4 rounded-full bg-slate-100 px-4 py-2 text-sm text-slate-600">
+
+              Member Since {joinedDate}
+
+            </div>
+
           </div>
 
-          {/* Profile Content */}
-          <div className="p-8">
+        </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Statistics */}
 
-              <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
-                <p className="text-sm text-slate-500 mb-1">
-                  Full Name
-                </p>
-                <p className="text-lg font-semibold text-slate-800">
-                  {userDetails.name || "N/A"}
-                </p>
-              </div>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
 
-              <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
-                <p className="text-sm text-slate-500 mb-1">
-                  Email Address
-                </p>
-                <p className="text-lg font-semibold text-slate-800 break-all">
-                  {userDetails.email || "N/A"}
-                </p>
-              </div>
+          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
 
-              <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
-                <p className="text-sm text-slate-500 mb-1">
-                  Age
-                </p>
-                <p className="text-lg font-semibold text-slate-800">
-                  {userDetails.dob ? getAge(userDetails.dob) : "N/A"}
-                </p>
-              </div>
+            <p className="text-sm text-slate-500">
 
-              <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
-                <p className="text-sm text-slate-500 mb-1">
-                  Phone Number
-                </p>
-                <p className="text-lg font-semibold text-slate-800">
-                  {userDetails.phone || "N/A"}
-                </p>
-              </div>
+              Total Interviews
+
+            </p>
+
+            <h2 className="mt-3 text-3xl font-bold text-slate-800">
+
+              {totalInterviews}
+
+            </h2>
+
+          </div>
+
+          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+
+            <p className="text-sm text-slate-500">
+
+              Best Score
+
+            </p>
+
+            <h2 className="mt-3 text-3xl font-bold text-slate-800">
+
+              {bestScore}/10
+
+            </h2>
+
+          </div> 
+
+          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+
+            <p className="text-sm text-slate-500">
+
+              Average Technical Score
+
+            </p>
+
+            <h2 className="mt-3 text-3xl font-bold text-slate-800">
+
+              {averageTechnicalScore}/10
+
+            </h2>
+
+          </div>
+
+          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+
+            <p className="text-sm text-slate-500">
+
+              Average Communication Score
+
+            </p>
+
+            <h2 className="mt-3 text-3xl font-bold text-slate-800">
+
+              {averageCommunicationScore}/5
+
+            </h2>
+
+          </div>
+
+        </div>
+
+        {/* Personal Information */}
+
+        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-8">
+
+          <div className="flex items-center justify-between mb-8">
+
+            <div>
+
+              <h2 className="text-2xl font-semibold text-slate-800">
+
+                Personal Information
+
+              </h2>
+
+              <p className="mt-1 text-slate-500">
+
+                Manage your account details.
+
+              </p>
+
+            </div>
+
+            <button
+              onClick={() => setIsChangeDetailsForm(true)}
+              className="rounded-xl bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 font-medium transition-all duration-300 cursor-pointer"
+            >
+
+              Edit Profile
+
+            </button>
+
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-5">
+
+            <div className="rounded-xl border border-slate-200 p-5">
+
+              <p className="text-sm text-slate-500">
+
+                Full Name
+
+              </p>
+
+              <p className="mt-1 text-lg font-semibold text-slate-800">
+
+                {userDetails?.name || "N/A"}
+
+              </p>
+
+            </div>
+
+            <div className="rounded-xl border border-slate-200 p-5">
+
+              <p className="text-sm text-slate-500">
+
+                Email Address
+
+              </p>
+
+              <p className="mt-1 text-lg font-semibold text-slate-800 break-all">
+
+                {userDetails?.email || "N/A"}
+
+              </p>
+
+            </div>
+
+            <div className="rounded-xl border border-slate-200 p-5">
+
+              <p className="text-sm text-slate-500">
+
+                Phone Number
+
+              </p>
+
+              <p className="mt-1 text-lg font-semibold text-slate-800">
+
+                {userDetails?.phone || "N/A"}
+
+              </p>
+
+            </div>
+
+            <div className="rounded-xl border border-slate-200 p-5">
+
+              <p className="text-sm text-slate-500">
+
+                Date of Birth
+
+              </p>
+
+              <p className="mt-1 text-lg font-semibold text-slate-800">
+
+                {userDetails?.dob
+                  ? moment(userDetails.dob).format("DD MMM YYYY")
+                  : "N/A"}
+
+              </p>
+
+            </div>
+
+            <div className="rounded-xl border border-slate-200 p-5">
+
+              <p className="text-sm text-slate-500">
+
+                Age
+
+              </p>
+
+              <p className="mt-1 text-lg font-semibold text-slate-800">
+
+                {getAge(userDetails?.dob)}
+
+              </p>
 
             </div>
 
@@ -105,8 +295,7 @@ function Profile() {
       </div>
 
     </div>
-    
-  )
+  );
 }
 
-export default Profile
+export default Profile;

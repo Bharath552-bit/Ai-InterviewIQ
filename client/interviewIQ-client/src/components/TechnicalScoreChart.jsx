@@ -58,6 +58,7 @@ function TechnicalScoreChart() {
 
           <YAxis
             domain={[0, 10]}
+            ticks={[0, 2, 4, 6, 8, 10]}
             tick={{ fill: "#64748B", fontSize: 12 }}
             tickLine={false}
             axisLine={false}

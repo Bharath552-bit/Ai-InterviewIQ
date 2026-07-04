@@ -20,6 +20,8 @@ function NewInterview() {
   const [timer,setTimer] = useState(5*60)
   const [isLastMinute,setIsLastMinute] = useState(false)
   const [isInterviewStarted,setIsInterviewStarted] = useState(false)
+  const [result,setResult] = useState(null)
+  const interviewEnded = useRef(false)
   const location = useLocation()
   const setup = location.state
 
@@ -80,20 +82,32 @@ function NewInterview() {
     
   }
 
-  function endInterview(){
-    socket.emit("end-conversation")
-  }
+  function endInterview() {
+
+    if (interviewEnded.current) return;
+
+    interviewEnded.current = true;
+
+    socket.emit("end-conversation");
+
+}
 
   useEffect(()=>{
     socket.connect()
     socket.on("speak-feedback",(data)=>{
-      if(data.feedback){
-        textToSpeech(data.feedback,setIsAiSpeaking)
+      if(data){
+        setResult(data)
+        textToSpeech(data.feedback,setIsAiSpeaking,()=>{
+          socket.disconnect()
+          navigate("/interview/completed",{
+            state : data
+          })
+        })
       }
     })
 
     return ()=>{
-      socket.off("end-interview")
+      socket.off()
       socket.disconnect()
     }
   },[])
@@ -108,8 +122,9 @@ function NewInterview() {
     }
     const interval = setInterval(()=>{
       setTimer((prev)=>{
-        if(prev == 60){
-          socket.emit("end-conversation")
+        if(prev == 30){
+          endInterview()
+          console.log("triggering in useeffect")
           setIsLastMinute(true)
         }
         if(prev<=0){
